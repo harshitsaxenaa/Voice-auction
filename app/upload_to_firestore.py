@@ -4,15 +4,12 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Initialize Firebase app
-cred = credentials.Certificate("firebase_key.json")  # ✅ Your downloaded key
+cred = credentials.Certificate("firebase_key.json") 
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-# Load local JSON
 with open("data.json", "r") as f:
     data = json.load(f)
-
-# Upload each product to Firestore
 for product_id, product in data.items():
     # Convert end_time string to Firestore timestamp
     try:
@@ -22,6 +19,6 @@ for product_id, product in data.items():
         continue
 
     db.collection("products").document(product_id).set(product)
-    print(f"✅ Uploaded {product['name']} ({product_id})")
+    print(f"Uploaded {product['name']} ({product_id})")
 
-print("🔥 Upload complete!")
+print("Upload complete!")
