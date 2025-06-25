@@ -4,17 +4,13 @@ from datetime import datetime
 import firebase_admin
 from firebase_admin import credentials, firestore
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firebase Admin SDK
 cred = credentials.Certificate("firebase_key.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
-
-# 🔁 GET all active products
 @app.route("/products", methods=["GET"])
 def get_products():
     now = datetime.now()
@@ -43,7 +39,7 @@ def get_products():
     return jsonify(result), 200
 
 
-# 🔍 GET a single product by name (case-insensitive)
+#GET a single product by name
 @app.route("/product", methods=["GET"])
 def get_product():
     product_name = request.args.get("product_name")
@@ -61,7 +57,7 @@ def get_product():
     return jsonify({"error": "Product not found"}), 404
 
 
-# 💰 POST a new bid on a product
+#POST a new bid on a product
 @app.route("/product/bid", methods=["POST"])
 def post_bid():
     req_data = request.get_json()
@@ -107,7 +103,7 @@ def post_bid():
     return jsonify({"error": "Product not found"}), 404
 
 
-# 📊 GET auction stats
+#GET auction stats
 @app.route("/stats", methods=["GET"])
 def get_stats():
     stats = {}
@@ -127,7 +123,7 @@ def get_stats():
     return jsonify(stats), 200
 
 
-# 🏁 Run app
+# Run app
 if __name__ == "__main__":
     import os
     port = int(os.environ.get("PORT", 5000))
